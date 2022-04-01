@@ -3,7 +3,7 @@ import { getBike } from "~/models/bike.server";
 
 import { prisma } from "~/db.server";
 
-export const loader = async ({params}) => {
+export const loader = async ({params}: any) => {
     // const bike = await prisma.bike.findFirst({ where: {id: params.bikeId}})
     const bike = await getBike(params.bikeId)
     const host = await prisma.user.findFirst({where: {id: bike?.userId}})

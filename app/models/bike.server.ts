@@ -8,6 +8,6 @@ export function getBikes() {
     });
 }
 
-export function getBike(bikeId) {
+export function getBike(bikeId: any) {
     return prisma.bike.findFirst({ where: {id: bikeId}})
 }
