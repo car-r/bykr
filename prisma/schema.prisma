@@ -35,6 +35,8 @@ model Bike {
   model String
   description String
   type String
+  delivery Boolean?
+  range String?
 
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   userId String
