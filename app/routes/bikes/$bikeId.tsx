@@ -22,7 +22,7 @@ export default function BikeDetailRoute() {
     
     console.log(data)
     return (
-        <div className="flex flex-col">
+        <div className="flex flex-col ">
             <img src={data.imgSrc} alt={data.model} className="h-60 w-auto object-cover mb-2"/>
             <h4 className="font-bold text-2xl mb-1">{data.brand} <span>{data.model}</span></h4>
             
