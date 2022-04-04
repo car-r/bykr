@@ -11,7 +11,7 @@ export default function BikesIndexPage() {
     const data = useLoaderData()
     console.log(data)
     return (
-        <div className="flex flex-col">
+        <div className="flex flex-col ">
             <h1 className="text-2xl font-bold">Bikes for rent</h1>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mx-auto">
                 {data.map((bike: any) => (
