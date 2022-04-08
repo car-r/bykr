@@ -19,6 +19,7 @@ model User {
   bike Bike?
   notes    Note[]
   rides Ride[]
+
 }
 
 model Password {
@@ -37,11 +38,14 @@ model Bike {
   type String
   delivery Boolean?
   range String?
+  favorite Boolean?
 
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   userId String
 
   rides Ride[]
+
+
 }
 
 model Ride {
