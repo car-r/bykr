@@ -1,7 +1,23 @@
-import { json, useLoaderData, useCatch, Form } from "remix";
+import { json, useLoaderData, useCatch, Form, redirect, useActionData } from "remix";
 import { getBike } from "~/models/bike.server";
 
 import { prisma } from "~/db.server";
+
+export const action = async ({request, params}) => {
+    const form = await request.formData()
+    console.log(form)
+
+    if (form.get('_method') === 'false') {
+        await prisma.bike.update({ where: {id: params.bikeId}, data: {favorite: 'false'}})
+        return redirect(`/bikes/${params.bikeId}`);
+    }
+
+    if (form.get('_method') === 'true') {
+        await prisma.bike.update({ where: {id: params.bikeId}, data: {favorite: 'true'}})
+        return redirect(`/bikes/${params.bikeId}`);
+    }
+    
+}
 
 export const loader = async ({params}: any) => {
     // const bike = await prisma.bike.findFirst({ where: {id: params.bikeId}})
@@ -20,12 +36,34 @@ export default function BikeDetailRoute() {
     
     let avgRating = total / ratingArray.length
     
+    // const actionData = useActionData()
     console.log(data)
     return (
         <div className="flex flex-col ">
             <img src={data.imgSrc} alt={data.model} className="h-60 w-auto object-cover mb-2 md:h-96"/>
-            <h4 className="font-bold text-2xl mb-1">{data.brand} <span>{data.model}</span></h4>
-            
+            <div className="flex justify-between">
+                <h4 className="font-bold text-2xl mb-1">{data.brand} <span>{data.model}</span></h4>
+                {data.favorite === 'true' ? 
+                <Form method="post">
+                <input type="hidden" name="_method" value='false' />
+                <button type="submit" onClick={ () => {console.log('set false')}}>
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" viewBox="0 0 20 20" fill="currentColor">
+                    <path fillRule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clipRule="evenodd" />
+                </svg>
+                </button>
+            </Form>
+                : 
+                <Form method="post">
+                <input type="hidden" name="_method" value='true' />
+                <button type="submit" onClick={ () => {console.log('set true')}}>
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                </svg>
+                </button>
+            </Form>
+                }
+                
+            </div>
             <div className="flex font-bold mb-6 items-center">
                 {ratingArray.length === 0 ? <p>0</p> : <p>
                     {avgRating.toFixed(1)}
